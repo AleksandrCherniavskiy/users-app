@@ -3,8 +3,8 @@ import {
   ChangeDetectionStrategy,
   AfterViewInit,
   ViewChild,
+  OnInit,
 } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -12,6 +12,7 @@ import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { UsersService } from '../services/users.service';
 
 interface User {
   id: number;
@@ -39,15 +40,19 @@ interface User {
   styleUrls: ['./users-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersPageComponent implements AfterViewInit {
+export class UsersPageComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['firstName', 'lastName', 'age', 'address'];
   dataSource = new MatTableDataSource<User>();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private http: HttpClient) {
-    this.fetchUsers();
+  constructor(private usersService: UsersService) {}
+
+  ngOnInit() {
+    this.usersService.getUsers().subscribe((users) => {
+      this.dataSource.data = users;
+    });
   }
 
   ngAfterViewInit(): void {
@@ -63,20 +68,6 @@ export class UsersPageComponent implements AfterViewInit {
         data.lastName.toLowerCase().includes(lowerFilter)
       );
     };
-  }
-
-  // Fetch users from the API and assign them to the dataSource.
-  fetchUsers(): void {
-    this.http
-      .get<{
-        users: User[];
-      }>(
-        'https://dummyjson.com/users?limit=0&select=id,firstName,lastName,age,address'
-      )
-      .subscribe((response) => {
-        // Update the data source's data property.
-        this.dataSource.data = response.users;
-      });
   }
 
   // Filter the table using the built-in filter mechanism.
