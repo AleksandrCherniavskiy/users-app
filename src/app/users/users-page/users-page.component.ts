@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   AfterViewInit,
   ViewChild,
-  OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { UsersService } from '../services/users.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface User {
   id: number;
@@ -40,19 +40,20 @@ interface User {
   styleUrls: ['./users-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersPageComponent implements OnInit, AfterViewInit {
+export class UsersPageComponent implements AfterViewInit {
   displayedColumns: string[] = ['firstName', 'lastName', 'age', 'address'];
   dataSource = new MatTableDataSource<User>();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private usersService: UsersService) {}
-
-  ngOnInit() {
-    this.usersService.getUsers().subscribe((users) => {
-      this.dataSource.data = users;
-    });
+  constructor(private usersService: UsersService) {
+    this.usersService
+      .getUsers()
+      .pipe(takeUntilDestroyed())
+      .subscribe((users) => {
+        this.dataSource.data = users;
+      });
   }
 
   ngAfterViewInit(): void {
