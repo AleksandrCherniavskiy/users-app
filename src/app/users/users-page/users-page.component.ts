@@ -13,17 +13,7 @@ import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { UsersService } from '../services/users.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  age: number;
-  address: {
-    address: string;
-    city: string;
-  };
-}
+import { User } from '../models/user/user.model';
 
 @Component({
   selector: 'app-users-page',
