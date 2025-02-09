@@ -38,7 +38,6 @@ interface User {
     ReactiveFormsModule,
   ],
   templateUrl: './users-page.component.html',
-  styleUrls: ['./users-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersPageComponent implements AfterViewInit {
