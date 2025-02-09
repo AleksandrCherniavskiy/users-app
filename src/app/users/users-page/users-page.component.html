@@ -4,8 +4,7 @@
     <mat-label>Search Users</mat-label>
     <input
       matInput
-      #searchInput
-      (input)="onSearch(searchInput.value)"
+      [formControl]="searchControl"
       placeholder="Search by first or last name"
     />
   </mat-form-field>

@@ -5,7 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
@@ -35,6 +35,7 @@ interface User {
     MatPaginatorModule,
     MatInputModule,
     MatSortModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './users-page.component.html',
   styleUrls: ['./users-page.component.css'],
@@ -43,6 +44,8 @@ interface User {
 export class UsersPageComponent implements AfterViewInit {
   displayedColumns: string[] = ['firstName', 'lastName', 'age', 'address'];
   dataSource = new MatTableDataSource<User>();
+
+  searchControl: FormControl = new FormControl('');
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -53,6 +56,11 @@ export class UsersPageComponent implements AfterViewInit {
       .pipe(takeUntilDestroyed())
       .subscribe((users) => {
         this.dataSource.data = users;
+      });
+    this.searchControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((value) => {
+        this.onSearch(value);
       });
   }
 
