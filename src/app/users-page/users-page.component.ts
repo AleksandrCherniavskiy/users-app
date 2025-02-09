@@ -35,6 +35,7 @@ interface User {
     MatInputModule,
   ],
   templateUrl: './users-page.component.html',
+  styleUrl: './users-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersPageComponent {
@@ -102,7 +103,9 @@ export class UsersPageComponent {
     this.http
       .get<{
         users: User[];
-      }>('https://dummyjson.com/users?limit=0&select=id,firstName,lastName,age,address')
+      }>(
+        'https://dummyjson.com/users?limit=0&select=id,firstName,lastName,age,address'
+      )
       .subscribe((response) => {
         this.rawUsers.set(response.users);
       });

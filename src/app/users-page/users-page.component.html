@@ -1,12 +1,12 @@
 <div class="p-4">
   <!-- Search Input -->
-  <mat-form-field appearance="outline" class="w-full mb-4">
+  <mat-form-field class="w-full">
     <mat-label>Search Users</mat-label>
     <input
       matInput
+      placeholder="Search by first or last name"
       #searchInput
       (input)="onSearch(searchInput.value)"
-      placeholder="Search by first or last name"
     />
   </mat-form-field>
 
