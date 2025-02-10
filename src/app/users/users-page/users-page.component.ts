@@ -54,11 +54,9 @@ export class UsersPageComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Assign sort and paginator after view initialization.
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
 
-    // Set a custom filter predicate to search only by first and last names.
     this.dataSource.filterPredicate = (data: User, filter: string) => {
       const lowerFilter = filter.trim().toLowerCase();
       return (
@@ -68,10 +66,9 @@ export class UsersPageComponent implements AfterViewInit {
     };
   }
 
-  // Filter the table using the built-in filter mechanism.
   onSearch(filterValue: string): void {
     this.dataSource.filter = filterValue;
-    // If pagination is active, reset to the first page when the filter changes.
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
